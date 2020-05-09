@@ -57,3 +57,28 @@ end note
 ```
 
 0.6: New note
+
+![](https://www.websequencediagrams.com/files/render?link=oBTHKqcAHmPHVbn7lLzZL7EnD9o1GAk84RF88f9imclMFJDj1SibFw8hDR2OPmt3)
+
+```
+note over browser:
+user inputs a new note and click save
+end note
+
+note over browser:
+browser starts executing js-code
+that handles form submit
+end note
+
+note over browser:
+a new note is created from input value and date
+then pushed to the existing array of notes
+end note
+
+note over browser:
+the list of notes is redrawn without reloading
+end note
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+server-->browser: HTTP Status Code 201 Created
+```
