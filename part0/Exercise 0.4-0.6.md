@@ -1,5 +1,8 @@
 0.4: new note
 
+![](https://www.websequencediagrams.com/files/render?link=M6zQDTTgt7uyRIUVgq40htBQoesCV0Q2AxhjI4coUvmHfpdzy5ta0R6gAyVLVYxC)
+
+```UML
 note over browser:
 user inputs note and save
 end note
@@ -25,6 +28,8 @@ note over browser:
 browser executes the event handler
 that renders notes to display
 end note
+```
 
 0.5: Single page app
+
 0.6: New note
