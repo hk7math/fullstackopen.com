@@ -5,6 +5,9 @@ const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</bu
 
 const Statistics = ({good, neutral, bad}) => (
   <>
+    <div>good {good}</div>
+    <div>neutral {neutral}</div>
+    <div>bad {bad}</div>
     <div>all {good + neutral + bad}</div>
     <div>average {(good - bad)/(good + neutral + bad)} </div>
     <div>positive {good/(good + neutral + bad)*100} % </div>
@@ -23,11 +26,13 @@ const App = () => {
       <Button handleClick={()=>setGood(good+1)} text='good'/>
       <Button handleClick={()=>setNeutral(neutral+1)} text='neutral'/>
       <Button handleClick={()=>setBad(bad+1)} text='bad'/>
+      
       <h1>statistics</h1>
-      <div>good {good}</div>
-      <div>neutral {neutral}</div>
-      <div>bad {bad}</div>
-      <Statistics good={good} neutral={neutral} bad={bad}/>
+      {
+        good + neutral + bad > 0 
+        ? <Statistics good={good} neutral={neutral} bad={bad}/>
+        : <div>No feedback given</div>
+      }
     </div>
   )
 }
