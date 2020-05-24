@@ -7,6 +7,10 @@ const App = (props) => {
   return (
     <div>
       {props.anecdotes[selected]}
+      <br/>
+      <button onClick={() => setSelected(Math.floor(Math.random() * props.anecdotes.length))}>
+        next ancedote
+      </button>
     </div>
   )
 }
