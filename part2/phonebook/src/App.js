@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import phonebook from './services/phonebook'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -11,14 +11,14 @@ const App = () => {
   const [ search, setSearch ] = useState('')
 
   useEffect( () => {
-    axios
-      .get('http://localhost:3001/persons')
+    phonebook
+      .getAll()
       .then( res => {
-        setPersons(res.data)
+        setPersons( res )
       })
   },[])
 
-  const addName = (e) => {
+  const addName = ( e ) => {
     e.preventDefault()
     const name = newName.trim()
     const number = newNumber.trim()
