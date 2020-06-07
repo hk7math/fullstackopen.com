@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Notification from './components/Notification'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -9,6 +10,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ search, setSearch ] = useState('')
+  const [ message, setMessage ] = useState('')
 
   useEffect( () => {
     phonebook
@@ -38,8 +40,7 @@ const App = () => {
               ? person
               : resPerson
             ))
-            setNewName('')
-            setNewNumber('')
+            afterAction(`Updated ${resPerson.name}`)
           })
       }
     } else {
@@ -48,10 +49,18 @@ const App = () => {
         .addPerson( newPerson )
         .then( resPerson => {
           setPersons( persons.concat( resPerson ))
-          setNewName('')
-          setNewNumber('')
+          afterAction(`Added ${resPerson.name}`)
         })
+      }
     }
+    
+  const afterAction = msg => {  
+    setNewName('')
+    setNewNumber('')
+    setMessage( msg )
+    setInterval( () => {
+      setMessage('')
+    }, 2000)
   }
 
   const delName = id => {
@@ -67,6 +76,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      { message && <Notification message={message} color={'green'} /> }
       <Filter search = { search } setSearch = { setSearch }/>
 
       <h3>add a new</h3>
