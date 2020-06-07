@@ -18,40 +18,57 @@ const App = () => {
       })
   },[])
 
-  const addName = ( e ) => {
+  const addName = e => {
     e.preventDefault()
     const name = newName.trim()
     const number = newNumber.trim()
-    if ( persons.filter( person => person.name === name).length ){
-      alert(`${name} is already added to phonebook`)
+    if ( persons.filter( person => person.name === name ).length ){
+      alert(`${ name } is already added to phonebook`)
     } else {
-      const newPerson = { name, number }
-      setPersons(persons.concat(newPerson))
-      setNewName('')
-      setNewNumber('')
+      const newPerson = { name, number, id: persons.length+1 }
+      phonebook
+        .addPerson( newPerson )
+        .then( res => {
+          setPersons(persons.concat( newPerson ))
+          setNewName('')
+          setNewNumber('')
+        })
+    }
+  }
+
+  const delName = id => {
+    if ( window.confirm(`Delete ${persons.find( person => person.id === id ).name}?`) ){
+      phonebook
+        .deletePerson( id )
+        .then( res => {
+          setPersons( persons.filter( person => person.id !== id ) )
+        })
     }
   }
 
   const personsToShow = persons.filter( person =>
-    person.name.toLowerCase().indexOf(search) > -1
+    person.name.toLowerCase().indexOf( search ) > -1
   )
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter search = {search} setSearch = {setSearch}/>
+      <Filter search = { search } setSearch = { setSearch }/>
 
       <h3>add a new</h3>
       <PersonForm 
-        newName = {newName}
-        setNewName = {setNewName}
-        newNumber = {newNumber}
-        setNewNumber = {setNewNumber}
-        addName = {addName}
+        newName = { newName }
+        setNewName = { setNewName }
+        newNumber = { newNumber }
+        setNewNumber = { setNewNumber }
+        addName = { addName }
       />
       
       <h3>Numbers</h3>
-      <Persons personsToShow = {personsToShow} />
+      <Persons 
+        personsToShow = { personsToShow } 
+        handleClick = { id => delName( id ) }
+      />
     </div>
   )
 }
