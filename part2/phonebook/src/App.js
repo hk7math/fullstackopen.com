@@ -17,19 +17,37 @@ const App = () => {
         setPersons( res )
       })
   },[])
+  
+  const personsToShow = persons.filter( person =>
+    person.name.toLowerCase().indexOf( search ) > -1
+  )
 
   const addName = e => {
     e.preventDefault()
     const name = newName.trim()
     const number = newNumber.trim()
-    if ( persons.filter( person => person.name === name ).length ){
-      alert(`${ name } is already added to phonebook`)
+    const samePerson = persons.filter( person => person.name === name )
+    if ( samePerson.length ){
+      if ( window.confirm(`${ name } is already added to phonebook, replace the old number with a new one?`)) {
+        const newPerson = { ...samePerson[0], number }
+        phonebook
+          .updatePerson( newPerson.id, newPerson)
+          .then( resPerson => {
+            setPersons( persons.map( person => 
+              person.id !== resPerson.id
+              ? person
+              : resPerson
+            ))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
     } else {
-      const newPerson = { name, number, id: persons.length+1 }
+      const newPerson = { name, number, id: persons.length + 1 }
       phonebook
         .addPerson( newPerson )
-        .then( res => {
-          setPersons(persons.concat( newPerson ))
+        .then( resPerson => {
+          setPersons( persons.concat( resPerson ))
           setNewName('')
           setNewNumber('')
         })
@@ -45,10 +63,6 @@ const App = () => {
         })
     }
   }
-
-  const personsToShow = persons.filter( person =>
-    person.name.toLowerCase().indexOf( search ) > -1
-  )
 
   return (
     <div>
@@ -67,7 +81,7 @@ const App = () => {
       <h3>Numbers</h3>
       <Persons 
         personsToShow = { personsToShow } 
-        handleClick = { id => delName( id ) }
+        handleClick = { delName }
       />
     </div>
   )
