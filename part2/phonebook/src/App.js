@@ -10,7 +10,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ search, setSearch ] = useState('')
-  const [ message, setMessage ] = useState('')
+  const [ message, setMessage ] = useState({})
 
   useEffect( () => {
     phonebook
@@ -40,7 +40,16 @@ const App = () => {
               ? person
               : resPerson
             ))
-            afterAction(`Updated ${resPerson.name}`)
+            afterAction({
+              text: `Updated ${ resPerson.name }`,
+              color: 'green'
+            })
+          })
+          .catch( error => {
+            afterAction({
+              text: `Information of ${ name } has already been removed from server`,
+              color: 'red'
+            })
           })
       }
     } else {
@@ -49,7 +58,16 @@ const App = () => {
         .addPerson( newPerson )
         .then( resPerson => {
           setPersons( persons.concat( resPerson ))
-          afterAction(`Added ${resPerson.name}`)
+          afterAction({
+            text: `Added ${ resPerson.name }`,
+            color: 'green'
+          })
+        })
+        .catch( error => {
+          afterAction({
+            text: `Please refresh to get the most updated list before adding new record`,
+            color: 'red'
+          })
         })
       }
     }
@@ -64,11 +82,18 @@ const App = () => {
   }
 
   const delName = id => {
-    if ( window.confirm(`Delete ${persons.find( person => person.id === id ).name}?`) ){
+    const target = persons.find( person => person.id === id ).name
+    if ( window.confirm(`Delete ${target}?`) ){
       phonebook
         .deletePerson( id )
         .then( res => {
           setPersons( persons.filter( person => person.id !== id ) )
+        })
+        .catch( error => {
+          afterAction({
+            text: `Information of ${ target } has already been removed from server`,
+            color: 'red'
+          })
         })
     }
   }
@@ -76,7 +101,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      { message && <Notification message={message} color={'green'} /> }
+      { message.text && <Notification text={message.text} color={message.color} /> }
       <Filter search = { search } setSearch = { setSearch }/>
 
       <h3>add a new</h3>

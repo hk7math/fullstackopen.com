@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Notification = ({ message }) => {
+const Notification = ({ text, color }) => {
   const msgStyle = {
-    color: 'green',
+    color,
     background: 'lightgrey',
     fontSize: 20,
     borderStyle: 'solid',
@@ -11,8 +11,8 @@ const Notification = ({ message }) => {
     marginBottom: 10
   }
   return (
-    <div style={msgStyle}>
-      {message}
+    <div style={ msgStyle }>
+      { text }
     </div>
   )
 }
