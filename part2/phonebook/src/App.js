@@ -21,7 +21,7 @@ const App = () => {
   },[])
   
   const personsToShow = persons.filter( person =>
-    person.name.toLowerCase().indexOf( search ) > -1
+    person.name.toLowerCase().indexOf( search.toLowerCase() ) > -1
   )
 
   const addName = e => {
